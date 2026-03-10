@@ -2,6 +2,23 @@ import pygame
 import numpy as np
 import random
 
+
+class ButterflyParticle:
+    def __init__(self, quality=48.0):
+        self.q = quality
+        self.position = np.random.rand(3)
+        self.velocity = np.zeros(3)
+        self.stability = 0.0
+
+    def update_stability(self, energy_field, gravity_potential):
+        # Implementation of your Final Equation
+        numerator = self.q * (energy_field - (gravity_potential / np.sqrt(2)))
+        self.stability = numerator / (9 / 8)
+
+        # Feedback loop: If stability > 1.0, increase friction
+        if self.stability > 1.0:
+            self.velocity *= 0.9  # Damping the "lol" spike
+
 # --- 1. Simulation Constants ---
 WIDTH, HEIGHT = 800, 800
 NUM_PARTICLES = 2000
